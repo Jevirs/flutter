@@ -54,31 +54,37 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: controller,
-      slivers: <Widget>[
-        SliverAppBar(
-          pinned: true,
-          expandedHeight: 200.0,
-          flexibleSpace: FlexibleSpaceBar(
-            title: textShow
-                ? Text(
-                    title,
-                    style: TextStyle(fontSize: 14),
-                    overflow: TextOverflow.ellipsis,
-                  )
-                : null,
-            background: Image.network(
-              image,
-              fit: BoxFit.cover,
+    if (body == "") {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return CustomScrollView(
+        controller: controller,
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 200.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: textShow
+                  ? Text(
+                      title,
+                      style: TextStyle(fontSize: 14),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : null,
+              background: Image.network(
+                image,
+                fit: BoxFit.cover,
+              ),
+              collapseMode: CollapseMode.parallax,
             ),
-            collapseMode: CollapseMode.parallax,
           ),
-        ),
-        SliverFillRemaining(
-          child: new HtmlView(data: body),
-        ),
-      ],
-    );
+          SliverFillRemaining(
+            child: new HtmlView(data: body),
+          ),
+        ],
+      );
+    }
   }
 }
