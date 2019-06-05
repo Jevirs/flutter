@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/zhihu/detail.dart';
 import 'package:flutter_demo/zhihu/home_model.dart';
 import 'package:flutter_demo/zhihu/http.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeList extends StatefulWidget {
   String date;
@@ -17,34 +18,44 @@ class HomeList extends StatefulWidget {
 
 class _ListState extends State<HomeList> {
   List<Story> stories = [];
+  bool isError = false;
 
-  void getList() async {
+  void getList() {
+    getData().then((res) {
+      setState(() {
+        stories = res.stories;
+      });
+    }).catchError((onError) {
+      setState(() {
+        isError = true;
+      });
+    });
+  }
+
+  Future<dynamic> getData() async {
     setState(() {
       stories = [];
     });
-    var res = await dio.get('/before/${widget.date}');
-    HomeData hotData = HomeData.fromJson(res.data);
-    setState(() {
-      stories = hotData.stories;
-    });
+    return await new API().get('/before/${widget.date}');
   }
 
   @override
   void initState() {
     super.initState();
-    print("List new Date ===> " + widget.date);
     getList();
   }
 
   @override
   void didUpdateWidget(HomeList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print("List new Date ===> " + widget.date);
     getList();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isError) {
+      return new Center(child: new Text('Network Error'));
+    }
     if (stories.length == 0) {
       return new Center(child: new CircularProgressIndicator());
     } else {
@@ -59,7 +70,11 @@ class _ListState extends State<HomeList> {
 
           return new ListTile(
             contentPadding: const EdgeInsets.all(16.0),
-            leading: new Image.network(item['images'][0]),
+            leading: new CachedNetworkImage(
+              imageUrl: item['images'][0],
+              placeholder: (context, url) => new CircularProgressIndicator(),
+              errorWidget: (context, url, error) => new Icon(Icons.error),
+            ),
             title: new Text(item['title']),
             onTap: () => {
                   Navigator.of(context).push(

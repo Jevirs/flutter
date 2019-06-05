@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/zhihu/detail_model.dart';
 import 'package:flutter_demo/zhihu/http.dart';
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class Detail extends StatefulWidget {
   final String id;
@@ -24,7 +24,7 @@ class _DetailState extends State<Detail> {
   bool isLoaded = false;
 
   void getList() async {
-    var res = await dio.get('/${widget.id}');
+    var res = await new API().get('/${widget.id}');
     DetailData detailData = new DetailData.fromJson(res.data);
     setState(() {
       body = detailData.body;
@@ -85,8 +85,11 @@ class _DetailState extends State<Detail> {
           ];
         },
         controller: controller,
-        body: new Container(
-          child: new HtmlView(data: body),
+        body: new SingleChildScrollView(
+          child: HtmlWidget(
+            body,
+            webView: true,
+          ),
         ),
       );
     }

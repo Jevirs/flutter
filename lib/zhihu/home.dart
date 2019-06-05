@@ -15,8 +15,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Future _selectDate() async {
-    var nowTime = new DateTime.now();
-    print(nowTime.year);
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: widget.selectedDate,
@@ -34,7 +32,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("知乎Hot"),
+          title: new Text("Daily Hot"),
           actions: <Widget>[
             new IconButton(
               color: new Color(Colors.white.value),

@@ -7,7 +7,7 @@ class Zhihu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        title: "知乎Hot",
+        title: "Daily Hot",
         theme: new ThemeData(primaryColor: Colors.blue),
         home: new Home());
   }

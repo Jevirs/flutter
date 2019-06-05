@@ -25,8 +25,10 @@ dependencies:
   cupertino_icons: ^0.1.2
   english_words: ^3.1.0
   dio: ^2.1.7
-  flutter_html_view: ^0.5.11
   intl: ^0.15.8
+  cached_network_image: ^0.8.0
+  flutter_cache_manager: ^0.3.2
+  flutter_widget_from_html: ^0.2.1+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
