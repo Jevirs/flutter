@@ -22,8 +22,9 @@ class _ListState extends State<HomeList> {
 
   void getList() {
     getData().then((res) {
+      HomeData homeData = new HomeData.fromJson(res.data);
       setState(() {
-        stories = res.stories;
+        stories = homeData.stories;
       });
     }).catchError((onError) {
       setState(() {
@@ -35,6 +36,7 @@ class _ListState extends State<HomeList> {
   Future<dynamic> getData() async {
     setState(() {
       stories = [];
+      isError = false;
     });
     return await new API().get('/before/${widget.date}');
   }
@@ -54,7 +56,13 @@ class _ListState extends State<HomeList> {
   @override
   Widget build(BuildContext context) {
     if (isError) {
-      return new Center(child: new Text('Network Error'));
+      return new Center(
+          child: new Column(
+        children: <Widget>[
+          new Icon(Icons.error),
+          new Text("something wrong with network!")
+        ],
+      ));
     }
     if (stories.length == 0) {
       return new Center(child: new CircularProgressIndicator());
