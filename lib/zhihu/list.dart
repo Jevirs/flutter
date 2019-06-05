@@ -5,6 +5,10 @@ import 'package:flutter_demo/zhihu/home_model.dart';
 import 'package:flutter_demo/zhihu/http.dart';
 
 class HomeList extends StatefulWidget {
+  String date;
+
+  HomeList({this.date});
+
   @override
   State<StatefulWidget> createState() {
     return new _ListState();
@@ -15,7 +19,10 @@ class _ListState extends State<HomeList> {
   List<Story> stories = [];
 
   void getList() async {
-    var res = await dio.get('/before/20190604');
+    setState(() {
+      stories = [];
+    });
+    var res = await dio.get('/before/${widget.date}');
     HomeData hotData = HomeData.fromJson(res.data);
     setState(() {
       stories = hotData.stories;
@@ -25,6 +32,14 @@ class _ListState extends State<HomeList> {
   @override
   void initState() {
     super.initState();
+    print("List new Date ===> " + widget.date);
+    getList();
+  }
+
+  @override
+  void didUpdateWidget(HomeList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("List new Date ===> " + widget.date);
     getList();
   }
 
