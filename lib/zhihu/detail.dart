@@ -19,17 +19,19 @@ class _DetailState extends State<Detail> {
   String title = "";
   String image = "";
   String imageSource = "";
-  ScrollController controller = ScrollController();
+  ScrollController controller = new ScrollController();
   bool textShow = false;
+  bool isLoaded = false;
 
   void getList() async {
     var res = await dio.get('/${widget.id}');
-    DetailData detailData = DetailData.fromJson(res.data);
+    DetailData detailData = new DetailData.fromJson(res.data);
     setState(() {
       body = detailData.body;
       title = detailData.title;
       image = detailData.image;
       imageSource = detailData.imageSource;
+      isLoaded = true;
     });
   }
 
@@ -54,36 +56,38 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
-    if (body == "") {
-      return Center(
-        child: CircularProgressIndicator(),
+    if (!isLoaded) {
+      return new Center(
+        child: new CircularProgressIndicator(),
       );
     } else {
-      return CustomScrollView(
-        controller: controller,
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 200.0,
-            flexibleSpace: FlexibleSpaceBar(
-              title: textShow
-                  ? Text(
-                      title,
-                      style: TextStyle(fontSize: 14),
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  : null,
-              background: Image.network(
-                image,
-                fit: BoxFit.cover,
+      return NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return <Widget>[
+            new SliverAppBar(
+              pinned: true,
+              expandedHeight: 200.0,
+              flexibleSpace: new FlexibleSpaceBar(
+                title: textShow
+                    ? new Text(
+                        title,
+                        style: new TextStyle(fontSize: 14),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    : null,
+                background: new Image.network(
+                  image,
+                  fit: BoxFit.cover,
+                ),
+                collapseMode: CollapseMode.parallax,
               ),
-              collapseMode: CollapseMode.parallax,
-            ),
-          ),
-          SliverFillRemaining(
-            child: new HtmlView(data: body),
-          ),
-        ],
+            )
+          ];
+        },
+        controller: controller,
+        body: new Container(
+          child: new HtmlView(data: body),
+        ),
       );
     }
   }
