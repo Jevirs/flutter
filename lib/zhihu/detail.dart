@@ -22,17 +22,31 @@ class _DetailState extends State<Detail> {
   ScrollController controller = new ScrollController();
   bool textShow = false;
   bool isLoaded = false;
+  bool isError = false;
 
-  void getList() async {
-    var res = await new API().get('/${widget.id}');
-    DetailData detailData = new DetailData.fromJson(res.data);
-    setState(() {
-      body = detailData.body;
-      title = detailData.title;
-      image = detailData.image;
-      imageSource = detailData.imageSource;
-      isLoaded = true;
+  Future<dynamic> getData() async {
+    return await new API().get('/${widget.id}');
+  }
+
+  void getList() {
+    getData().then((res) {
+      DetailData detailData = new DetailData.fromJson(res.data);
+      setState(() {
+        body = detailData.body;
+        title = detailData.title;
+        image = detailData.image;
+        imageSource = detailData.imageSource;
+      });
+    }).catchError((err) {
+      isError = true;
     });
+    new Future.delayed(
+        new Duration(milliseconds: 1500),
+        () => {
+              setState(() {
+                isLoaded = true;
+              })
+            });
   }
 
   void addListener() {
@@ -56,6 +70,16 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
+    if (isError) {
+      return new Center(
+        child: new Column(
+          children: <Widget>[
+            new Icon(Icons.error),
+            new Text("Network Error!"),
+          ],
+        ),
+      );
+    }
     if (!isLoaded) {
       return new Center(
         child: new CircularProgressIndicator(),
