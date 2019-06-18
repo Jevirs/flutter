@@ -6,8 +6,7 @@ import 'package:flutter_demo/zhihu/http.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeList extends StatefulWidget {
-  String date;
-
+  final String date;
   HomeList({this.date});
 
   @override
