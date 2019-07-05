@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  State<StatefulWidget> createState() => new MyAppState();
+  State<StatefulWidget> createState() => MyAppState();
 }
 
 class MyAppState extends State<MyApp> {
@@ -14,7 +14,7 @@ class MyAppState extends State<MyApp> {
 
   _refresh() async {
     var url = 'https://easy-mock.com/mock/5cebc5ae735a1d6408ec3ee2/demo/eat';
-    var httpClient = new HttpClient();
+    var httpClient = HttpClient();
 
     String result;
     try {
@@ -24,7 +24,7 @@ class MyAppState extends State<MyApp> {
         var json = await response.transform(utf8.decoder).join();
         var data = jsonDecode(json);
         var length = data['data'].length;
-        result = data['data'][new Random().nextInt(length)];
+        result = data['data'][Random().nextInt(length)];
       } else {
         result = '没找到吃的';
       }
@@ -38,14 +38,14 @@ class MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) => new MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
         title: 'YunjiFinance',
-        home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text('吃啥呢'),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('吃啥呢'),
           ),
-          body: new Center(
-            child: new Text(word),
+          body: Center(
+            child: Text(word),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {

@@ -1,41 +1,34 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Startup Name Generator',
-      theme: new ThemeData(
-        primaryColor: Colors.teal,
-      ),
-      home: new RandomWords(),
-    );
-  }
+void main() {
+  runApp(MaterialApp(
+    title: 'list',
+    home: RandomWords(),
+  ));
 }
 
 class RandomWords extends StatefulWidget {
   @override
-  createState() => new RandomWordsState();
+  createState() => RandomWordsState();
 }
 
 class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
 
-  final _saved = new Set<WordPair>();
+  final _saved = Set<WordPair>();
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Startup'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup'),
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.delete), onPressed: _deleteSaved),
-          new IconButton(icon: new Icon(Icons.menu), onPressed: _pushSaved)
+          IconButton(icon: Icon(Icons.delete), onPressed: _deleteSaved),
+          IconButton(icon: Icon(Icons.menu), onPressed: _pushSaved)
         ],
       ),
       body: _buildSuggestions(),
@@ -43,11 +36,11 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildSuggestions() {
-    return new ListView.builder(
+    return ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
         if (i > 200) return null;
-        if (i.isOdd) return new Divider();
+        if (i.isOdd) return Divider();
         final index = i ~/ 2;
         if (index >= _suggestions.length) {
           _suggestions.addAll(generateWordPairs().take(10));
@@ -59,9 +52,9 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget _buildRow(WordPair pair, int index) {
     final alreadySaved = _saved.contains(pair);
-    return new ListTile(
-      title: new Text(index.toString() + '--' + pair.asPascalCase),
-      trailing: new Icon(
+    return ListTile(
+      title: Text(index.toString() + '--' + pair.asPascalCase),
+      trailing: Icon(
         alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null,
       ),
@@ -81,12 +74,12 @@ class RandomWordsState extends State<RandomWords> {
 
   void _pushSaved() {
     Navigator.of(context).push(
-      new MaterialPageRoute(
+      MaterialPageRoute(
         builder: (context) {
           final tiles = _saved.map(
             (pair) {
-              return new ListTile(
-                title: new Text(
+              return ListTile(
+                title: Text(
                   pair.asPascalCase,
                   style: _biggerFont,
                 ),
@@ -98,11 +91,11 @@ class RandomWordsState extends State<RandomWords> {
             tiles: tiles,
           ).toList();
 
-          return new Scaffold(
-            appBar: new AppBar(
-              title: new Text('Saved Suggestions'),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Saved Suggestions'),
             ),
-            body: new ListView(children: divided),
+            body: ListView(children: divided),
           );
         },
       ),

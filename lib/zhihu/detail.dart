@@ -19,18 +19,18 @@ class _DetailState extends State<Detail> {
   String title = "";
   String image = "";
   String imageSource = "";
-  ScrollController controller = new ScrollController();
+  ScrollController controller = ScrollController();
   bool textShow = false;
   bool isLoaded = false;
   bool isError = false;
 
   Future<dynamic> getData() async {
-    return await new API().get('/${widget.id}');
+    return await API().get('/${widget.id}');
   }
 
   void getList() {
     getData().then((res) {
-      DetailData detailData = new DetailData.fromJson(res.data);
+      DetailData detailData = DetailData.fromJson(res.data);
       setState(() {
         body = detailData.body;
         title = detailData.title;
@@ -40,8 +40,8 @@ class _DetailState extends State<Detail> {
     }).catchError((err) {
       isError = true;
     });
-    new Future.delayed(
-        new Duration(milliseconds: 1500),
+    Future.delayed(
+        Duration(milliseconds: 1500),
         () => {
               setState(() {
                 isLoaded = true;
@@ -71,35 +71,35 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     if (isError) {
-      return new Center(
-        child: new Column(
+      return Center(
+        child: Column(
           children: <Widget>[
-            new Icon(Icons.error),
-            new Text("Network Error!"),
+            Icon(Icons.error),
+            Text("Network Error!"),
           ],
         ),
       );
     }
     if (!isLoaded) {
-      return new Center(
-        child: new CircularProgressIndicator(),
+      return Center(
+        child: CircularProgressIndicator(),
       );
     } else {
       return NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
-            new SliverAppBar(
+            SliverAppBar(
               pinned: true,
               expandedHeight: 200.0,
-              flexibleSpace: new FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 title: textShow
-                    ? new Text(
+                    ? Text(
                         title,
-                        style: new TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 14),
                         overflow: TextOverflow.ellipsis,
                       )
                     : null,
-                background: new Image.network(
+                background: Image.network(
                   image,
                   fit: BoxFit.cover,
                 ),
@@ -109,7 +109,7 @@ class _DetailState extends State<Detail> {
           ];
         },
         controller: controller,
-        body: new SingleChildScrollView(
+        body: SingleChildScrollView(
           child: HtmlWidget(
             body,
             webView: true,

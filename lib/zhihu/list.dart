@@ -11,7 +11,7 @@ class HomeList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new _ListState();
+    return _ListState();
   }
 }
 
@@ -21,7 +21,7 @@ class _ListState extends State<HomeList> {
 
   void getList() {
     getData().then((res) {
-      HomeData homeData = new HomeData.fromJson(res.data);
+      HomeData homeData = HomeData.fromJson(res.data);
       setState(() {
         stories = homeData.stories;
       });
@@ -37,7 +37,7 @@ class _ListState extends State<HomeList> {
       stories = [];
       isError = false;
     });
-    return await new API().get('/before/${widget.date}');
+    return await API().get('/before/${widget.date}');
   }
 
   @override
@@ -55,40 +55,40 @@ class _ListState extends State<HomeList> {
   @override
   Widget build(BuildContext context) {
     if (isError) {
-      return new Center(
-          child: new Column(
+      return Center(
+          child: Column(
         children: <Widget>[
-          new Icon(Icons.error),
-          new Text("something wrong with network!")
+          Icon(Icons.error),
+          Text("something wrong with network!")
         ],
       ));
     }
     if (stories.length == 0) {
-      return new Center(child: new CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator());
     } else {
-      return new ListView.builder(
+      return ListView.builder(
         itemBuilder: (context, index) {
           if (index.isOdd) {
-            return new Divider();
+            return Divider();
           }
 
           final i = index ~/ 2;
           final item = stories[i].toJson();
 
-          return new ListTile(
+          return ListTile(
             contentPadding: const EdgeInsets.all(16.0),
-            leading: new CachedNetworkImage(
+            leading: CachedNetworkImage(
               imageUrl: item['images'][0],
-              placeholder: (context, url) => new CircularProgressIndicator(),
-              errorWidget: (context, url, error) => new Icon(Icons.error),
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
-            title: new Text(item['title']),
+            title: Text(item['title']),
             onTap: () => {
-                  Navigator.of(context).push(
-                      new MaterialPageRoute(builder: (BuildContext context) {
-                    return new Scaffold(
-                      body: new Container(
-                        child: new Detail(id: item['id'].toString()),
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return Scaffold(
+                      body: Container(
+                        child: Detail(id: item['id'].toString()),
                       ),
                     );
                   }))
