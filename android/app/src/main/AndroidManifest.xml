@@ -12,8 +12,8 @@
     
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_demo"
-        android:icon="@mipmap/ic_launcher">
+        android:label="记得打卡"
+        android:icon="@mipmap/didi">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
