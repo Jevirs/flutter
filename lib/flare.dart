@@ -19,9 +19,9 @@ class _HomeState extends State<FlareHome> {
   /* animation */
   String _animationName = '';
 
-  void _playAnimation() {
+  void _playAnimation(String name) {
     setState(() {
-      _animationName = 'scan';
+      _animationName = name;
     });
   }
 
@@ -37,41 +37,33 @@ class _HomeState extends State<FlareHome> {
       appBar: AppBar(
         title: Text('flare'),
       ),
-      body: Container(
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+      body: Center(
+        child: Column(
           children: <Widget>[
             Container(
-              width: 300,
-              height: 300,
-              alignment: Alignment.center,
-              child: FlareActor(
-                'assets/scan.flr',
-                alignment: Alignment.center,
-                fit: BoxFit.fill,
-                animation: _animationName,
-                callback: (animationName) {
+                width: 600,
+                height: 400,
+                child: FlareActor('assets/sun.flr',
+                    alignment: Alignment.center,
+                    fit: BoxFit.fill,
+                    animation: _animationName, callback: (animationName) {
                   print(animationName);
                   _clearAnimation();
-                },
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(12.0)),
-            ),
-            RaisedButton(
-              child: Text('Scan!'),
-              onPressed: () => {_playAnimation()},
-            ),
-            // Positioned.fill(
-            //   child: new AspectRatio(
-            //       aspectRatio: controller.value.aspectRatio,
-            //       child: CameraPreview(controller)),
-            // ),
+                })),
+            ButtonBar(
+              children: <Widget>[
+                RaisedButton(
+                  child: Text('sun'),
+                  onPressed: () => _playAnimation('sun'),
+                ),
+                RaisedButton(
+                  child: Text('moon'),
+                  onPressed: () => _playAnimation('moon'),
+                )
+              ],
+            )
           ],
-        )),
+        ),
       ),
     );
   }

@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: 'Battery Demo',
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Battery'),
+            title: Text('Battery12'),
           ),
           body: Center(
             child: Column(
