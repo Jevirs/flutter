@@ -11,9 +11,8 @@ String result = '???';
 TextEditingController _controller = TextEditingController(text: "2097");
 
 _didi(BuildContext context) async {
-  var url =
-      'http://attendance.yunjiglobal.com/attendance/attendance/check?workcode=' +
-          _controller.text;
+  var _url = '';
+  var url = _url + _controller.text;
   var httpClient = HttpClient();
   try {
     var request = await httpClient.getUrl(Uri.parse(url));
